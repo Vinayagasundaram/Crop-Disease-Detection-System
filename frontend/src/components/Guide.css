@@ -1,0 +1,113 @@
+.about-container {
+  max-width: 750px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.about-header h2 {
+  font-size: 1.75rem;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.about-header p {
+  color: #34d399;
+  font-size: 0.95rem;
+}
+
+.about-section {
+  background-color: #1e1e1e;
+  border: 1px solid #2c2c2c;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.about-section h3 {
+  font-size: 1.1rem;
+  color: white;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.about-section p {
+  color: #a3a3a3;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.guide-description {
+  margin-bottom: 1rem;
+}
+
+.guide-info-text {
+  line-height: 1.7;
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.step-item {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.step-num {
+  width: 24px;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #2c2c2c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #34d399;
+  font-weight: 700;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.step-text h4 {
+  font-size: 0.9rem;
+  color: white;
+  margin-bottom: 0.15rem;
+}
+
+.step-text p {
+  font-size: 0.8rem;
+  color: #a3a3a3;
+}
+
+.crop-list-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.crop-chip {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid #2c2c2c;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #a3a3a3;
+}
+
+.crop-chip:hover {
+  border-color: #34d399;
+  color: #34d399;
+  cursor: pointer;
+}
