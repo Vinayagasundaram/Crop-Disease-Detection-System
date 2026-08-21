@@ -9,11 +9,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies (TensorFlow-CPU reduces container footprint)
+# Install dependencies (tflite-runtime consumes almost no memory)
 RUN pip install --no-cache-dir \
     fastapi==0.110.0 \
     uvicorn==0.28.0 \
-    tensorflow-cpu>=2.16.1 \
+    tflite-runtime==2.14.0 \
     numpy==1.26.4 \
     opencv-python-headless==4.9.0.80 \
     python-multipart==0.0.9 \
@@ -24,8 +24,8 @@ RUN pip install --no-cache-dir \
 # Copy application files (referencing repository root context)
 COPY ./backend/main.py /app/backend/main.py
 
-# Download the model weights directly from the GitHub Release asset
-RUN curl -L -o /app/plant_disease.keras https://github.com/Vinayagasundaram/Crop-Disease-Detection-System/releases/download/v1.0/plant_disease.keras
+# Download the lightweight TFLite model from the GitHub Release asset
+RUN curl -L -o /app/plant_disease.tflite https://github.com/Vinayagasundaram/Crop-Disease-Detection-System/releases/download/v1.0/plant_disease.tflite
 
 ENV PORT=8000
 EXPOSE 8000

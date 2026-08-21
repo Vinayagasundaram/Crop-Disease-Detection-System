@@ -2,7 +2,7 @@ import os
 import cv2
 import json
 import numpy as np
-import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
@@ -25,7 +25,7 @@ app.add_middleware(
 )
 
 # Load the keras model
-MODEL_NAME = "plant_disease.keras"
+MODEL_NAME = "plant_disease.tflite"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 model_path = os.path.join(BASE_DIR, MODEL_NAME)
 
@@ -34,11 +34,12 @@ if not os.path.exists(model_path):
 
 print(f"Loading model from: {model_path}")
 try:
-    model = tf.keras.models.load_model(model_path)
-    print("Model loaded successfully!")
+    interpreter = tflite.Interpreter(model_path=model_path)
+    interpreter.allocate_tensors()
+    print("TFLite model loaded successfully!")
 except Exception as e:
     print(f"Error loading model: {e}")
-    model = None
+    interpreter = None
 
 # Configure Gemini if the API key is present
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -139,8 +140,8 @@ def health_check():
 
 @app.post("/predict")
 async def predict_disease(file: UploadFile = File(...)):
-    if model is None:
-        raise HTTPException(status_code=503, detail="TensorFlow model is not loaded.")
+    if interpreter is None:
+        raise HTTPException(status_code=503, detail="TFLite model is not loaded.")
         
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Uploaded file is not an image.")
@@ -149,10 +150,19 @@ async def predict_disease(file: UploadFile = File(...)):
         contents = await file.read()
         preprocessed_img = preprocess_image(contents)
         
-        # Predict using CNN model
-        predictions = model.predict(preprocessed_img)
-        result_index = int(np.argmax(predictions))
-        confidence = float(np.max(predictions) * 100.0)
+        # Predict using TFLite interpreter
+        input_details = interpreter.get_input_details()
+        output_details = interpreter.get_output_details()
+        
+        # Set input tensor
+        interpreter.set_tensor(input_details[0]['index'], preprocessed_img)
+        # Run inference
+        interpreter.invoke()
+        # Get predictions
+        raw_predictions = interpreter.get_tensor(output_details[0]['index'])[0]
+        
+        result_index = int(np.argmax(raw_predictions))
+        confidence = float(np.max(raw_predictions) * 100.0)
         
         if result_index >= len(class_names):
             raise HTTPException(status_code=500, detail="Prediction index out of bounds.")
