@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir \
     fastapi==0.110.0 \
     uvicorn==0.28.0 \
     tensorflow-cpu>=2.16.1 \
-    numpy>=1.23.5 \
+    numpy==1.26.4 \
     opencv-python-headless==4.9.0.80 \
     python-multipart==0.0.9 \
     pillow==10.2.0 \
