@@ -5,6 +5,7 @@
 
 # Machine Learning model
 plant_disease.keras
+plant_disease.tflite
 
 # Python
 __pycache__/
