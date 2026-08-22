@@ -25,7 +25,7 @@ RUN pip install --no-cache-dir \
 COPY ./backend/main.py /app/backend/main.py
 
 # Download the lightweight TFLite model from the GitHub Release asset
-RUN curl -L -o /app/plant_disease.tflite https://github.com/Vinayagasundaram/Crop-Disease-Detection-System/releases/download/v1.0/plant_disease.tflite
+RUN curl -L -o /app/plant_disease.tflite https://github.com/Vinayagasundaram/Crop-Disease-Detection-System/releases/download/v2.0/plant_disease.tflite
 
 ENV PORT=8000
 EXPOSE 8000
